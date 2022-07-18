@@ -1,8 +1,3 @@
-/*.container, .controls{
-    display: flex;
-    flex-direction: column;
-    border: 1px black solid
-}*/
 .board{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -13,7 +8,9 @@
     height: 300px;
 }
 .cell{
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: 1px black solid;
     gap: 0px
 }
