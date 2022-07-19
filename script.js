@@ -32,8 +32,6 @@ const board = (() => {
         board.cellArray = Array(9).fill("")
         console.log(cellArray)
     }
-
-
     return {
         cellArray,
         displayArray, fillArray
@@ -41,6 +39,9 @@ const board = (() => {
 })();
 const gameFlow = (() => {
     let status = true;
+    let instructions = document.querySelector(".instructions")
+    let p1 = document.getElementById("p1");
+    let p2 = document.getElementById("p2");
     const player1 = player('John', 'X')
     const player2 = player('Bob', 'O')
     const getStatus = () => status;
@@ -48,11 +49,19 @@ const gameFlow = (() => {
         status = !status;
     }
     const handleWin = () => {
+
         if (!status) {
             alert(player1.getName() + " wins!")
+           
+
         }
-        else
+        else {
             alert(player2.getName() + " wins!")
+           
+        }
+        instructions.textContent = "enter player names"
+
+
     }
     const checkForWin = () => {
         console.log("testing")
@@ -89,7 +98,7 @@ const gameFlow = (() => {
         }
     }
     const startRound = (name1, name2) => {
-        status=true;
+        status = true;
         player1.setName(name1)
         player2.setName(name2)
         /*console.log(player1.getName())
@@ -97,22 +106,25 @@ const gameFlow = (() => {
         board.fillArray()
         board.displayArray()
 
+
     }
+    document.querySelectorAll(".cell").forEach(cell => {
+        cell.addEventListener('click', () => {
+            console.log("why")
+            gameFlow.handlePlay(gameFlow.getStatus(), cell)
+        })
+    })
+    document.querySelector(".start").addEventListener('click', () => {
+        console.log("test")
+        gameFlow.startRound(p1.value, p2.value)
+        instructions.textContent = "begin!"
+
+    })
     return {
         changeStatus, getStatus, handlePlay, startRound, checkForWin
     };
 })();
 
-document.querySelectorAll(".cell").forEach(cell => {
-    cell.addEventListener('click', () => {
-         console.log("why")
-        gameFlow.handlePlay(gameFlow.getStatus(), cell)
-    })
-})
-document.querySelector(".start").addEventListener('click', () => {
-    console.log("test")
-    gameFlow.startRound(document.getElementById("p1").value, document.getElementById("p2").value)
 
-})
 //console.log(board.cellArray)
 board.displayArray()
