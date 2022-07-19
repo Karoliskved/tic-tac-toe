@@ -1,13 +1,13 @@
-const player = (name, element)=>{
-    const getName=()=> name;
-    const getElement=()=> element;
-    return{
-        getName, 
+const player = (name, element) => {
+    const getName = () => name;
+    const getElement = () => element;
+    return {
+        getName,
         getElement
     }
 }
 const board = (() => {
-    const cellArray = ["X", "O", "X", "X", "O", "X", "O", "X", "O"];
+    const cellArray = ["", "", "", "", "", "", "", "", "", ""];
     const populateArray = () => {
         for (let i = 1; i <= 9; i++) {
             cellArray.push(document.getElementById(i))
@@ -28,36 +28,38 @@ const board = (() => {
     };
 })();
 const gameFlow = (() => {
-    let status=false;
-    const player1=player('John', 'X')
-    const player2=player('Bob', 'O')
-    const changeStatus=()=>{ 
-        status=!status;
+    let status = false;
+    const player1 = player('John', 'X')
+    const player2 = player('Bob', 'O')
+    const changeStatus = () => {
+        status = !status;
     }
-    const handlePlay=(status, cell)=>{
+    const handlePlay = (status, cell) => {
         console.log('halp me')
         let element
-        if(status)
-        element=player1.getElement()
+        if (status)
+            element = player1.getElement()
         else
-        element=player2.getElement()
-        board.cellArray[cell.id]=element
-        gameFlow.changeStatus()
-        board.displayArray()
+            element = player2.getElement()
+        if (board.cellArray[cell.id] === "") {
+            board.cellArray[cell.id] = element
+            gameFlow.changeStatus()
+            board.displayArray()
+        }
     }
-    const getStatus=()=> status;
+    const getStatus = () => status;
     return {
         changeStatus, getStatus, handlePlay
 
     };
 })();
 
-document.querySelectorAll(".cell").forEach(cell =>{
-    cell.addEventListener('click', ()=>{
+document.querySelectorAll(".cell").forEach(cell => {
+    cell.addEventListener('click', () => {
         console.log("why")
         gameFlow.handlePlay(gameFlow.getStatus(), cell)
     })
 })
-player1=player('test', 'x')
+player1 = player('test', 'x')
 console.log(board.cellArray)
 board.displayArray()
