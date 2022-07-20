@@ -38,6 +38,7 @@ const board = (() => {
     };
 })();
 const gameFlow = (() => {
+    let counter=0;
     let status = true;
     let instructions = document.querySelector(".instructions")
     let p1 = document.getElementById("p1");
@@ -48,20 +49,36 @@ const gameFlow = (() => {
     const changeStatus = () => {
         status = !status;
     }
+    function handleEvent(event) {
+        console.log("why")
+        gameFlow.handlePlay(gameFlow.getStatus(), this)
+    }
     const handleWin = () => {
 
         if (!status) {
             alert(player1.getName() + " wins!")
-           
+            document.querySelectorAll(".cell").forEach(cell => {
+                cell.removeEventListener('click', handleEvent)
+            })
+
 
         }
         else {
             alert(player2.getName() + " wins!")
-           
+            document.querySelectorAll(".cell").forEach(cell => {
+                cell.removeEventListener('click', handleEvent)
+            })
+
         }
-        instructions.textContent = "enter player names"
+        instructions.textContent = "enter player names to start"
 
 
+    }
+    const handleDraw=()=>{
+        alert("Draw!")
+            document.querySelectorAll(".cell").forEach(cell => {
+                cell.removeEventListener('click', handleEvent)
+            })
     }
     const checkForWin = () => {
         console.log("testing")
@@ -81,6 +98,9 @@ const gameFlow = (() => {
             handleWin();
         else if (board.cellArray[2] == board.cellArray[4] && board.cellArray[2] == board.cellArray[6] && board.cellArray[2] !== "")
             handleWin();
+        if(counter==9){
+            handleDraw()
+        }
     }
 
     const handlePlay = (status, cell) => {
@@ -91,29 +111,29 @@ const gameFlow = (() => {
         else
             element = player2.getElement()
         if (board.cellArray[cell.id] == "") {
+            counter++;
             board.cellArray[cell.id] = element;
             gameFlow.changeStatus();
             board.displayArray();
             gameFlow.checkForWin();
+            
         }
     }
     const startRound = (name1, name2) => {
         status = true;
+        counter=0;
         player1.setName(name1)
         player2.setName(name2)
         /*console.log(player1.getName())
         console.log(player2.getName())*/
         board.fillArray()
         board.displayArray()
-
-
-    }
-    document.querySelectorAll(".cell").forEach(cell => {
-        cell.addEventListener('click', () => {
-            console.log("why")
-            gameFlow.handlePlay(gameFlow.getStatus(), cell)
+        document.querySelectorAll(".cell").forEach(cell => {
+            cell.addEventListener('click', handleEvent)
         })
-    })
+    }
+
+
     document.querySelector(".start").addEventListener('click', () => {
         console.log("test")
         gameFlow.startRound(p1.value, p2.value)
